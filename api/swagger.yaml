@@ -1,0 +1,185 @@
+swagger: '2.0'
+info:
+  description: Challenge binar Chapter 8.
+  version: 1.0.0
+  title: Rest Api Challenge Binar 8
+  termsOfService: https://localhost://8000/
+  contact:
+    email: kevinjohan86@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost.com
+basePath: /api
+tags:
+  - name: players
+    description: Tentang Pemain
+schemes:
+  - https
+  - http
+paths:
+  /api/players:
+    post:
+      tags:
+        - players
+      summary: Menambahkan Pemain Baru
+      description: Buat Baru
+      parameters:
+        - in: body
+          name: body
+          description: Buat Pemain Baru
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+                example: kevinjhn
+              email:
+                type: string
+                example: kevin@gmail.com
+              password:
+                type: string
+                example: kvn123
+              experience:
+                type: integer
+                example: 2
+              lvl:
+                type: integer
+                example: 10
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: SUCCESS!
+        '500':
+          description: Failed
+    get:
+      tags:
+        - players
+      summary: mencari semua pemain
+      description: mendapatkan semua pemain
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        '200':
+          description: Berhasil!
+        '500':
+          description: Pemain Sudah Terdaftar
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: kevinjhn
+                email:
+                  type: string
+                  example: kevin@gmail.com
+                experience:
+                  type: integer
+                  example: 2
+                lvl:
+                  type: integer
+                  example: 10
+  /api/players/{id}:
+    get:
+      tags:
+        - players
+      summary: Mencari Pemain Berdasarkan Id
+      description: return a single player
+      operationId: getPlayerById
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: SUCCESS!
+        '500':
+          description: FAILED!!
+    put:
+      tags:
+        - players
+      summary: Update Player
+      description: This can only be done by the logged in user
+      operationId: updatePlayers
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: /api/players{id}
+      responses:
+        '200':
+          description: Player was updated successfully.
+        '400':
+          description: Cannot update Player with id=${id}. Maybe Player was not found or req.body is empty!
+        '500':
+          description: Error updating Player with id={id}
+    delete:
+      tags:
+        - players
+      summary: Delete Players by Id
+      description: Delete players by ID
+      operationId: deletePlayer
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of the player that needs to be deleted
+          required: true
+          type: integer
+          minimum: 1
+          format: int64
+      responses:
+        '200':
+          description: Player was deleted Successfully!
+        '400':
+          description: Cannot Delete playet with id=${id}. Maybe PLayer was not Found!
+        '500':
+          description: Could Not delete Player with id
+  /api/players/exp/{id}:
+    post:
+      tags:
+        - players
+      summary: Add player experience by certain amount
+      description: ''
+      operationId: AddPlayers
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet that needs to be updated
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Failed
